@@ -277,12 +277,3 @@ function ready(turn) {
     to_button();
     if(T === 1)cpu();
 }
-
-function fill() {
-    let vec = [9,2,13,0,7,14,12,8,15,1,4,10,3,6,11,5, 11,13,0,9,3,8,2,5,14,12,4,15,10,6,7,1]
-    var doc = document.querySelectorAll("input");
-    for(let i = 0;i < 32;i++){
-        doc[i].value = String(vec[i]);
-    }
-}
-// 1 8 7 10 15 6 (11)
