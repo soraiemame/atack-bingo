@@ -7,6 +7,7 @@ let memo = [[],[]];
 let ps = [];
 
 let T = -1;
+let evaled = document.querySelector("#eval");
 
 function read_cards() {
     console.log(T);
@@ -203,13 +204,13 @@ function nxt() {
                 g.set(1,x,y,0);
                 g.t = 1 - g.t;
                 if(w === g.t || rg === g.t){
-                    return [i * N + j,true];
+                    return [i * N + j,1];
                 }
-                else if(w !== -1 || d === -1)d = i * N + j;
+                else if(w !== 1 - g.t || d === -1)d = i * N + j;
             }
         }
     }
-    return [d,false];
+    return [d,0];
 }
 
 function put(n) {
@@ -226,19 +227,19 @@ function put(n) {
 }
 
 function cpu() {
-    console.log("cpu");
     let n,b;
     [n,b] = nxt();
-    console.log(`cpu play: ${n}(${inv_tr[n]})`,);
+    console.log(`cpu play: ${n}(${inv_tr[n]}) ${b}`);
     put(n);
     g.t = 1 - g.t;
-    console.log(["computer will win","player may win"][b]);
+    evaled.innerHTML = ["player may win","computer will win"][b];
     if(g.win() === 1 - T){
         alert("You Lose!");
-        // location.reload();
+        evaled.innerHTML = "You Lose!";
     }
     else if(g.win() === T){
         alert("You Win!");
+        evaled.innerHTML = "You Win!";
     }
 }
 
@@ -252,10 +253,12 @@ function player(n) {
     put(tr[n]);
     g.t = 1 - g.t;
     if(g.win() === T){
-        alert("You Win!")
+        alert("You Win!");
+        return;
     }
     else if(g.win() === 1 - T){
         alert("You Lose!");
+        return;
     }
     cpu();
 }
@@ -269,7 +272,17 @@ function ready(turn) {
         memo[0][i] = -1;
         memo[1][i] = -1;
     }
+    evaled.innertHTML = rec(g) === T ? "Player may win" : "Computer will win";
     console.log(rec(g));
     to_button();
     if(T === 1)cpu();
 }
+
+function fill() {
+    let vec = [9,2,13,0,7,14,12,8,15,1,4,10,3,6,11,5, 11,13,0,9,3,8,2,5,14,12,4,15,10,6,7,1]
+    var doc = document.querySelectorAll("input");
+    for(let i = 0;i < 32;i++){
+        doc[i].value = String(vec[i]);
+    }
+}
+// 1 8 7 10 15 6 (11)
